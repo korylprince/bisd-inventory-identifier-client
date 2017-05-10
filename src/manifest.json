@@ -1,0 +1,26 @@
+{
+    "manifest_version": 2,
+    "name": "Chromebook Identifier",
+    "description": "This extension lists inventory information about your chromebook",
+    "version": "1.1.2",
+    "icons": {
+        "16": "img/icon16.png",
+        "24": "img/icon24.png",
+        "32": "img/icon32.png",
+        "48": "img/icon48.png",
+        "128": "img/icon128.png"
+    },
+    "browser_action": {
+        "default_icon": {
+            "16": "img/icon16.png",
+            "24": "img/icon24.png",
+            "32": "img/icon32.png",
+            "48": "img/icon48.png",
+            "128": "img/icon128.png"
+        },
+        "default_popup": "index.html"
+    },
+    "permissions": [
+        "enterprise.deviceAttributes"
+    ]
+}
