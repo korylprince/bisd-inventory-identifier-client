@@ -1,9 +1,9 @@
-/*global API_BASE*/
+/* global API_BASE */
 
-import axios from "axios";
+import axios from "axios"
 
 function getDevice(id) {
-    return axios.get(API_BASE + "/devices/" + id);
-};
+    return axios.get(API_BASE + "/devices/" + id)
+}
 
-export default getDevice;
+export default getDevice

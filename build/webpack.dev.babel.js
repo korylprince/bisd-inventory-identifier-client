@@ -1,16 +1,22 @@
-import webpack from "webpack";
-import merge from "webpack-merge";
+import webpack from "webpack"
+import merge from "webpack-merge"
 
-import baseConfig from "./webpack.base.babel.js";
+import baseConfig from "./webpack.base.babel.js"
 
-var devConfig = {
+const devConfig = {
+    mode: "development",
     stats: {children: false},
-    devtool: "#cheap-module-inline-source-map",
+    devServer: {
+        hot: true,
+        stats: "minimal",
+        proxy: {
+            "/api": process.env.API_SERVER,
+        },
+    },
+    devtool: "inline-source-map",
     plugins: [
-        new webpack.EnvironmentPlugin({
-            DEBUG: true
-        })
-    ]
-};
+        new webpack.HotModuleReplacementPlugin(),
+    ],
+}
 
-export default merge(baseConfig, devConfig);
+export default merge(baseConfig, devConfig)

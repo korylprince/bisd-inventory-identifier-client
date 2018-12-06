@@ -1,11 +1,11 @@
-/*global chrome*/
+/* global chrome */
 
 function getEnterpriseID(callback) {
     if (chrome.enterprise && chrome.enterprise.deviceAttributes) {
-        chrome.enterprise.deviceAttributes.getDirectoryDeviceId(callback);
+        chrome.enterprise.deviceAttributes.getDirectoryDeviceId(callback)
     } else {
-        callback(null);
+        callback(null)
     }
 }
 
-export default getEnterpriseID;
+export default getEnterpriseID

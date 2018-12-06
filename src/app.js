@@ -1,11 +1,11 @@
-import "./style/app.styl";
+import "./style/app.styl"
 
-import Vue from "vue";
-import Vuetify from "vuetify";
+import Vue from "vue"
+import Vuetify from "vuetify"
 
-Vue.use(Vuetify);
+Vue.use(Vuetify)
 
-import mainComponent from "./components/main.vue";
+import mainComponent from "./components/main.vue"
 
-var Main = Vue.extend(mainComponent);
-new Main().$mount("#app");
+const Main = Vue.extend(mainComponent)
+new Main().$mount("#app")

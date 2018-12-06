@@ -1,27 +1,28 @@
-import webpack from "webpack";
-import OptimizeJsPlugin from "optimize-js-plugin";
-import OptimizeCssAssetsPlugin from "optimize-css-assets-webpack-plugin";
-import merge from "webpack-merge";
+import path from "path"
+import CleanWebpackPlugin from "clean-webpack-plugin"
+import UglifyJsPlugin from "uglifyjs-webpack-plugin"
+import OptimizeCssAssetsPlugin from "optimize-css-assets-webpack-plugin"
+import merge from "webpack-merge"
 
-import baseConfig from "./webpack.base.babel.js";
+const root = path.resolve(__dirname, "../")
 
-var prodConfig = {
-    plugins: [
-        new webpack.optimize.UglifyJsPlugin({
-            minimize: true,
-            comments: false
-        }),
-        new OptimizeJsPlugin({
-            sourceMap: false
-        }),
-        new OptimizeCssAssetsPlugin({
-            assetNameRegExp: /\.(css|styl)$/g
-        }),
-        new webpack.EnvironmentPlugin({
-            DEBUG: false
-        })
+import baseConfig from "./webpack.base.babel.js"
 
-    ]
-};
+const prodConfig = {
+    mode: "production",
+    optimization: {
+        minimizer: [
+            new CleanWebpackPlugin(["dist"], {root}),
+            new UglifyJsPlugin({
+                cache: true,
+                parallel: true,
+                sourceMap: false,
+            }),
+            new OptimizeCssAssetsPlugin({
+                assetNameRegExp: /\.(css|styl(us)?|s[ac]ss)$/g,
+            }),
+        ],
+    },
+}
 
-export default merge(baseConfig, prodConfig);
+export default merge(baseConfig, prodConfig)
