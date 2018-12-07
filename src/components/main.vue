@@ -25,14 +25,14 @@
                     There is no information about this device.
                 </div>
                 <div v-if="error != null">
-                    There was an error getting information about this chomebook.
+                    There was an error getting information about this Chromebook.
                     <div class="error-text">
                         <strong>Error:</strong> {{ error }}
                     </div>
                 </div>
         </v-card-text>
 
-        <v-card-actions style="float: right">
+        <v-card-actions style="float: right" v-if="device">
             <v-btn flat color="primary" @click.native="openInventory(device.inventory_number)">View Inventory</v-btn>
         </v-card-actions>
     </v-card>
@@ -60,6 +60,10 @@ export default {
                 this.device = await api.getDevice(serial)
             } catch (error) {
                 console.error("Unable to get device:", error)
+                if (error.message.includes("enterprise.deviceAttributes")) {
+                    this.missing = true
+                    return
+                }
                 if (error.response) {
                     if (error.response.status === 404) {
                         this.missing = true
