@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Chromebook Identifier",
     "description": "This extension lists inventory information about your chromebook",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "icons": {
         "16": "img/icon16.png",
         "24": "img/icon24.png",
