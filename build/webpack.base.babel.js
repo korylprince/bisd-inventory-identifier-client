@@ -25,6 +25,7 @@ const postcssLoader = {
 export default {
     entry: {
         app: path.resolve(root, "src/app.js"),
+        background: path.resolve(root, "src/background.js"),
     },
     output: {
         path: path.resolve(root, "dist/"),
@@ -77,6 +78,10 @@ export default {
     plugins: [
         new webpack.DefinePlugin({
             API_BASE: JSON.stringify(API_BASE),
+            API_SECRET: JSON.stringify(process.env.API_SECRET),
+            CHRONICLE_BASE: JSON.stringify(process.env.CHRONICLE_BASE),
+            SEARCH_BASE: JSON.stringify(process.env.SEARCH_BASE),
+            MOCK_SERIAL: JSON.stringify(process.env.MOCK_SERIAL),
         }),
         new VueLoaderPlugin(),
         new MiniCssExtractPlugin({

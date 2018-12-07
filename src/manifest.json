@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Chromebook Identifier",
     "description": "This extension lists inventory information about your chromebook",
-    "version": "1.1.2",
+    "version": "2.0.0",
     "icons": {
         "16": "img/icon16.png",
         "24": "img/icon24.png",
@@ -20,7 +20,13 @@
         },
         "default_popup": "index.html"
     },
+    "background": {
+        "scripts": ["js/background.js"]
+    },
     "permissions": [
-        "enterprise.deviceAttributes"
+        "identity",
+        "identity.email",
+        "enterprise.deviceAttributes",
+        "https://*.bullardisd.net/*"
     ]
 }

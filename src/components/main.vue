@@ -1,86 +1,66 @@
 <template>
-  <VApp id="app">
-    <VCard>
-      <VCardRow class="primary darken-1">
-        <VCardTitle>
-          <span class="white--text">
-            Chromebook Identifier
-          </span>
-          <VSpacer />
-        </VCardTitle>
-      </VCardRow>
-      <VCardText class="content">
-        <VCardRow>
-          <div
-            v-if="device == null && error == null && !missing"
-            class="loading"
-          >
-            <VProgressCircular
-              indeterminate
-              class="primary--text"
-            />
-          </div>
-          <div v-if="device != null">
-            <div><strong>Inventory Number:</strong> <span>{{ device.inventory_number }}</span></div>
-            <div><strong>Serial Number:</strong> <span>{{ device.serial_number }}</span></div>
-            <div><strong>Bag Tag:</strong> <span>{{ device.bag_tag ? device.bag_tag : "None" }}</span></div>
-            <div><strong>Status:</strong> <span>{{ device.status }}</span></div>
-            <div><strong>User:</strong> <span>{{ device.user }}</span></div>
-          </div>
-          <div v-if="missing">
-            There is no information about this device.
-          </div>
-          <div v-if="error != null">
-            There was an error getting information about this chomebook.
-            <div class="error-text">
-              <strong>Error:</strong> {{ error }}
+    <v-app id="app">
+    <v-card>
+        <v-card-title primary-title>
+            <div>
+                <h3 class="headline mb-0">Chromebook Identifier</h3>
             </div>
-          </div>
-        </VCardRow>
-      </VCardText>
-      <VCardRow
-        v-if="device != null"
-        actions
-      >
-        <VBtn
-          flat
-          class="secondary--text"
-          @click.native="openInventory(device.inventory_number)"
-        >
-          View Inventory
-        </VBtn>
-      </VCardRow>
-    </VCard>
-  </VApp>
+        </v-card-title>
+
+        <v-card-text class="content">
+            <div v-if="device == null && error == null && !missing" class="loading">
+                <v-progress-circular
+                    indeterminate
+                    class="primary--text"
+                    />
+            </div>
+                <div v-if="device != null">
+                    <div><strong>Inventory Number:</strong> <span>{{ device.inventory_number }}</span></div>
+                    <div><strong>Serial Number:</strong> <span>{{ device.serial_number }}</span></div>
+                    <div><strong>Bag Tag:</strong> <span>{{ device.bag_tag ? device.bag_tag : "None" }}</span></div>
+                    <div><strong>Status:</strong> <span>{{ device.status }}</span></div>
+                    <div><strong>User:</strong> <span>{{ device.user }}</span></div>
+                </div>
+                <div v-if="missing">
+                    There is no information about this device.
+                </div>
+                <div v-if="error != null">
+                    There was an error getting information about this chomebook.
+                    <div class="error-text">
+                        <strong>Error:</strong> {{ error }}
+                    </div>
+                </div>
+        </v-card-text>
+
+        <v-card-actions style="float: right">
+            <v-btn flat color="primary" @click.native="openInventory(device.inventory_number)">View Inventory</v-btn>
+        </v-card-actions>
+    </v-card>
+  </v-app>
 </template>
 <script>
-import getEnterpriseID from "../js/id.js"
-import getDevice from "../js/api.js"
-import openInventoryTab from "../js/search.js"
+import api from "../js/api.js"
+window.api = api
 
 export default {
     data: function() {
         return {
-            id: null,
             device: null,
             missing: false,
             error: null,
         }
     },
-    created: function() {
-        getEnterpriseID(id => {
-            if (id == null) {
-                this.missing = true
-                return
-            }
-
-            const promise = getDevice(id)
-
-            promise.then(response => {
-                this.device = response.data
-            }).catch(error => {
+    created() {
+        this.getDevice()
+    },
+    methods: {
+        async getDevice() {
+            try {
+                const serial = await api.getSerial()
+                this.device = await api.getDevice(serial)
+            } catch (error) {
+                console.error("Unable to get device:", error)
                 if (error.response) {
-                    console.error(error.response)
                     if (error.response.status === 404) {
                         this.missing = true
                     } else {
@@ -91,12 +71,11 @@ export default {
                 } else {
                     this.error = error.message
                 }
-            })
-        })
-    },
-    methods: {
+            }
+        },
+
         openInventory: function(inventory_number) {
-            openInventoryTab(inventory_number)
+            api.openInventoryTab(inventory_number)
         },
     },
 }
