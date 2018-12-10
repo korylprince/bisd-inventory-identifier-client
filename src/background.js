@@ -26,8 +26,14 @@ async function sendChronicle() {
             console.error("Unable to send Chronicle:", error)
         }
     }
+
+    let timer = window.setInterval(send, 15 * 60 * 1000)
+    window.addEventListener("online", () => {
+        window.clearInterval(timer)
+        send()
+        timer = window.setInterval(send, 15 * 60 * 1000)
+    })
     send()
-    window.setInterval(send, 15 * 60 * 1000)
 }
 
 sendChronicle()
