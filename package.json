@@ -1,6 +1,6 @@
 {
     "name": "bisd-inventory-identifier-client",
-    "version": "2.0.2",
+    "version": "2.0.3",
     "description": "Chromebook extension to list inventory information",
     "main": "dist/app.js",
     "scripts": {
