@@ -1,5 +1,9 @@
 import api from "./js/api.js"
 
+function sleep(ms) {
+    return new Promise(resolve => window.setTimeout(resolve, ms))
+}
+
 async function sendChronicle() {
     let username
     let serial
@@ -28,10 +32,11 @@ async function sendChronicle() {
     }
 
     let timer = window.setInterval(send, 15 * 60 * 1000)
-    window.addEventListener("online", () => {
+    window.addEventListener("online", async() => {
         window.clearInterval(timer)
-        send()
         timer = window.setInterval(send, 15 * 60 * 1000)
+        await sleep(5000)
+        send()
     })
     send()
 }
